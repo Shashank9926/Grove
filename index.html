@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a6bff">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Grove">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Grove – goals, habits & spending</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3efff;--card:#fff;--ink:#25203f;--mute:#7a7399;--line:#e4def7;--mint:#3ec99a;--sun:#ffc94a;--coral:#ff6f81;--sky:#5b9bff;--grape:#8a6bff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17142b;--card:#231f3d;--ink:#f1edff;--mute:#a59fc7;--line:#3a3560}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.4 Fredoka,system-ui,sans-serif;padding-bottom:84px;max-width:520px;margin-inline:auto}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0}
+header{padding:16px 16px 8px;display:flex;gap:12px;align-items:center}
+.plant{font-size:46px;width:70px;height:70px;border-radius:50%;background:var(--card);display:grid;place-items:center;border:3px solid var(--mint);transition:transform .4s}
+.plant.pop{transform:scale(1.25) rotate(-8deg)}
+.hd{flex:1}.hd b{font-size:19px;font-weight:600}
+.bar{height:12px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--mint);border-radius:9px;transition:width .5s}
+.sm{font-size:13px;color:var(--mute)}
+main{padding:8px 16px}
+.card{background:var(--card);border-radius:20px;padding:14px;margin:12px 0;border:2px solid var(--line)}
+h2{font-size:18px;margin:0 0 10px;font-weight:600}
+.row{display:flex;align-items:center;gap:10px}
+.add{display:flex;gap:8px;margin-top:10px}
+.add input,.add select{flex:1;min-width:0;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:var(--bg)}
+.btn{background:var(--grape);color:#fff;padding:10px 16px;border-radius:14px;font-weight:600}
+.btn.alt{background:var(--sun);color:#25203f}
+.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.chk{width:32px;height:32px;border-radius:11px;border:3px solid var(--grape);background:transparent;display:grid;place-items:center;font-size:18px;flex:none;transition:transform .2s}
+.chk.on{background:var(--mint);border-color:var(--mint);color:#fff;transform:scale(1.1)}
+.t{flex:1;min-width:0;overflow-wrap:anywhere}.t.done{text-decoration:line-through;color:var(--mute)}
+.x{background:none;color:var(--mute);font-size:18px;padding:4px 8px}
+.dots{display:flex;gap:4px;margin-top:4px}.dots span{width:14px;height:14px;border-radius:5px;background:var(--line)}.dots span.on{background:var(--mint)}
+.streak{font-weight:600;color:var(--coral);font-size:14px;white-space:nowrap}
+.ring{--p:0;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--sun) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;flex:none}
+.ring b{width:48px;height:48px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:14px}
+.tabs{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;display:flex;background:var(--card);border-top:2px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs button{flex:1;background:none;padding:6px;border-radius:14px;color:var(--mute);font-size:12px}
+.tabs button span{display:block;font-size:22px}
+.tabs button.on{color:var(--grape);background:var(--bg)}
+.mon{display:flex;align-items:center;justify-content:space-between}
+.mon button{background:var(--card);border:2px solid var(--line);width:40px;height:40px;border-radius:14px;font-size:18px}
+.big{font-size:34px;font-weight:600}
+.cat{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px}
+.cat .bar{flex:1;margin:0;height:10px}.cat .bar i{background:var(--c)}
+.trend{display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:6px}
+.trend div{flex:1;text-align:center;font-size:11px;color:var(--mute)}
+.trend i{display:block;background:var(--sky);border-radius:8px 8px 3px 3px;min-height:3px;margin-bottom:3px}
+.trend .cur i{background:var(--grape)}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bd{text-align:center;padding:10px 4px;border-radius:16px;background:var(--bg);font-size:12px;opacity:.45;filter:grayscale(1)}
+.bd.on{opacity:1;filter:none;border:2px solid var(--sun)}.bd s{display:block;text-decoration:none;font-size:30px}
+#modal{position:fixed;inset:0;background:rgba(20,15,40,.6);display:none;place-items:center;z-index:50;padding:20px}
+#modal.show{display:grid}
+.mbox{background:var(--card);border-radius:26px;padding:24px;text-align:center;max-width:340px;width:100%;animation:pop .4s}
+.mbox .e{font-size:64px}.scratch{background:repeating-linear-gradient(45deg,#b8aef5,#b8aef5 8px,#a396f0 8px,#a396f0 16px);border-radius:18px;padding:26px;margin:14px 0;font-weight:600;color:#25203f;cursor:pointer}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.cf{position:fixed;top:-20px;width:10px;height:14px;z-index:60;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 12px);transform:translate(-50%,-90px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:20px;z-index:70;transition:transform .35s;max-width:90%;text-align:center}
+#toast.show{transform:translate(-50%,0)}
+.empty{color:var(--mute);text-align:center;padding:10px 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
+.ring{transition:--p .9s cubic-bezier(.2,.8,.2,1)}
+.ring.walk{background:conic-gradient(var(--mint) calc(var(--p)*1%),var(--line) 0)}
+.bar i,.trend i{transition:width .9s cubic-bezier(.2,.8,.2,1),height .8s cubic-bezier(.2,.8,.2,1)}
+body{overflow-x:hidden}
+input,select{font-size:16px;min-width:0}
+.add{flex-wrap:wrap}.add input,.add select{flex:1 1 130px}.add .btn{flex:0 0 auto}.add input.dt{flex:0 0 150px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;width:100%}.chips:empty{display:none}
+.chips button{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:4px 10px;font-size:13px}
+.btn,.chk,.tabs button,.chips button{transition:transform .15s,background .2s}
+.btn:active,.tabs button:active,.chips button:active{transform:scale(.94)}
+.badges{grid-template-columns:repeat(5,1fr)}.bd{font-size:11px;padding:8px 2px}.bd s{font-size:26px}
+.fade{animation:fadeUp .35s ease-out}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}}
+.chk.tick{animation:tick .45s}@keyframes tick{40%{transform:scale(1.4) rotate(8deg)}}
+.fl{position:fixed;font-style:normal;font-size:26px;z-index:65;pointer-events:none;animation:up .9s ease-out forwards}
+@keyframes up{from{transform:translate(-50%,-50%)}to{transform:translate(-50%,-130px) scale(1.6);opacity:0}}
+.split{display:flex;gap:28px;margin:8px 0}.split b{font-size:18px}
+.over{color:var(--coral)}
+.mbox{max-height:88vh;overflow:auto}
+input[type=range]{width:100%;accent-color:var(--grape);flex:1}
+.mbox .add{justify-content:center}
+</style></head><body>
+<div id="toast"></div><div id="modal"></div>
+<header><div class="plant" id="plant">🌱</div><div class="hd"><b id="lv"></b><div class="bar"><i id="xpb"></i></div><div class="sm" id="xpt"></div></div></header>
+<main id="main"></main>
+<nav class="tabs" id="tabs"></nav>
+<script>
+const CATS=[['Food','🍜','#ff9f43'],['Travel','🚌','#5b9bff'],['Bills','💡','#ffc94a'],['Shopping','🛍️','#ff6f81'],['Fun','🎬','#8a6bff'],['Health','💊','#3ec99a'],['Other','✨','#9aa0b5']];
+const REW=['Chai or coffee break ☕','30 guilt-free minutes of scrolling 📱','Watch one episode 🎬','Your favourite snack 🍫','A short walk with music 🎧','Order that treat you wanted 🍰'];
+const BADGES=[['first','🎯','First goal'],['g10','🔥','10 goals'],['g50','🏆','50 goals'],['s3','🌿','3-day streak'],['s7','🌳','7-day streak'],['s30','👑','30-day streak'],['day','🎁','Perfect day'],['save','💰','Under budget'],['walk','👟','Step goal'],['long','🏔️','Big goal']];
+let S;const def={goals:{},habits:[],exp:[],budget:{},xp:0,rewards:REW.slice(),badges:{},claimed:{},tot:0,src:{'Credit card':[],'Loan':[],'Pay later':['Amazon Pay Later','Flipkart Pay Later','Simpl','LazyPay']},longs:[],steps:{},stepGoal:8000,stepAw:{}};
+try{S=Object.assign({},def,JSON.parse(localStorage.getItem('grove')||'{}'))}catch(e){S=Object.assign({},def)}
+const save=()=>{try{localStorage.setItem('grove',JSON.stringify(S))}catch(e){}};
+const pad=n=>String(n).padStart(2,'0'),key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>key(new Date()),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9),inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+let tab='today',V=new Date();V.setDate(1);
+const $=s=>document.querySelector(s);
+function toast(t){const e=$('#toast');e.textContent=t;e.className='show';clearTimeout(toast.h);toast.h=setTimeout(()=>e.className='',2600)}
+function confetti(n=40){const c=['#3ec99a','#ffc94a','#ff6f81','#5b9bff','#8a6bff'];for(let i=0;i<n;i++){const e=document.createElement('i');e.className='cf';e.style.left=Math.random()*100+'vw';e.style.background=c[i%5];e.style.animationDelay=Math.random()*.5+'s';e.style.borderRadius=i%2?'50%':'2px';document.body.appendChild(e);setTimeout(()=>e.remove(),2500)}}
+function modal(h){const m=$('#modal');m.innerHTML='<div class="mbox">'+h+'</div>';m.className='show'}
+const closeM=()=>$('#modal').className='';
+$('#modal').onclick=e=>{if(e.target.id==='modal')closeM()};
+const lvl=()=>Math.floor(S.xp/50)+1;
+function award(n){const b=lvl();S.xp=Math.max(0,S.xp+n);if(n>0&&lvl()>b){confetti(60);const p=$('#plant');p.classList.add('pop');setTimeout(()=>p.classList.remove('pop'),500);modal('<div class="e">'+plant()+'</div><h2>Level '+lvl()+'!</h2><p class="sm">Your plant is growing. Keep going.</p><button class="btn" onclick="closeM()">Nice</button>')}}
+const plant=()=>['🌱','🌿','🪴','🌳','🌸','🍎'][Math.min(lvl()-1,5)];
+function streak(h){let d=new Date(),c=0;if(!h.days[key(d)])d.setDate(d.getDate()-1);while(h.days[key(d)]){c++;d.setDate(d.getDate()-1)}return c}
+function badge(k){if(S.badges[k])return;S.badges[k]=1;const b=BADGES.find(x=>x[0]===k);setTimeout(()=>{confetti(25);toast(b[1]+' Badge unlocked: '+b[2])},400)}
+function checkBadges(){if(S.tot>=1)badge('first');if(S.tot>=10)badge('g10');if(S.tot>=50)badge('g50');const m=Math.max(0,...S.habits.map(streak));if(m>=3)badge('s3');if(m>=7)badge('s7');if(m>=30)badge('s30')}
+function dayDone(){const t=today(),g=S.goals[t]||[];return g.length>0&&g.every(x=>x.d)&&S.habits.every(h=>h.days[t])}
+function afterToggle(){checkBadges();if(dayDone()&&!S.claimed[today()]){S.claimed[today()]=1;badge('day');award(25);save();setTimeout(scratchCard,700)}save();render()}
+function scratchCard(){confetti(70);modal('<div class="e">🎁</div><h2>Perfect day!</h2><p class="sm">Every goal and habit is done. Claim your reward.</p><div class="scratch" id="sc" onclick="reveal()">Tap to scratch</div><button class="btn" onclick="closeM()">Close</button>')}
+function reveal(){const r=S.rewards.length?S.rewards[Math.floor(Math.random()*S.rewards.length)]:'Add rewards in the Rewards tab';const e=$('#sc');e.innerHTML=esc(r);e.style.background='var(--sun)';confetti(30)}
+function addGoal(){const i=$('#gi'),t=i.value.trim();if(!t)return;(S.goals[today()]=S.goals[today()]||[]).push({id:uid(),t,d:0});save();render()}
+function togGoal(id){const g=S.goals[today()].find(x=>x.id===id);g.d=g.d?0:1;if(g.d){S.tot++;award(10);confetti(18);toast('+10 XP')}else{S.tot=Math.max(0,S.tot-1);award(-10)}afterToggle()}
+function delGoal(id){S.goals[today()]=S.goals[today()].filter(x=>x.id!==id);save();render()}
+function addHabit(){const t=$('#hi').value.trim();if(!t)return;S.habits.push({id:uid(),t,days:{}});save();render()}
+function togHabit(id){const h=S.habits.find(x=>x.id===id),t=today();if(h.days[t]){delete h.days[t];award(-5)}else{h.days[t]=1;award(5);confetti(12);toast('+5 XP · '+streak(h)+'-day streak')}afterToggle()}
+function delHabit(id){if(confirm('Delete this habit and its history?')){S.habits=S.habits.filter(x=>x.id!==id);save();render()}}
+const mk=d=>d.getFullYear()+'-'+pad(d.getMonth()+1);
+const mExp=m=>S.exp.filter(e=>e.d.startsWith(m));
+function addExp(){const a=parseFloat($('#ea').value);if(!(a>0)){toast('Enter an amount above 0');return}S.exp.push({id:uid(),a,c:$('#ec').value,n:$('#en').value.trim(),d:$('#ed').value||today()});save();toast('Expense added');render()}
+function delExp(id){S.exp=S.exp.filter(x=>x.id!==id);save();render()}
+function shift(n){V.setMonth(V.getMonth()+n);render()}
+function setBudget(){const v=parseFloat($('#bu').value);if(v>0)S.budget[mk(V)]=v;else delete S.budget[mk(V)];save();render()}
+function addRew(){const t=$('#ri').value.trim();if(t){S.rewards.push(t);save();render()}}
+function delRew(i){S.rewards.splice(i,1);save();render()}
+function setTab(t){tab=t;render()}
+function vToday(){const t=today(),g=S.goals[t]||[],gd=g.filter(x=>x.d).length,hd=S.habits.filter(h=>h.days[t]).length,tot=g.length+S.habits.length,p=tot?Math.round((gd+hd)/tot*100):0;
+const dt=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+let h='<div class="card row"><div class="ring" data-p="'+p+'"><b>'+p+'%</b></div><div><h2 style="margin:0">'+dt+'</h2><div class="sm">'+(tot?(gd+hd)+' of '+tot+' done today':'Add a goal or habit to start')+'</div></div></div>';
+h+=vSteps();h+='<div class="card"><h2>🎯 Today\'s goals</h2>'+(g.length?g.map(x=>'<div class="item"><button class="chk '+(x.d?'on':'')+'" onclick="togGoal(\''+x.id+'\')">'+(x.d?'✓':'')+'</button><div class="t '+(x.d?'done':'')+'">'+esc(x.t)+'</div><button class="x" onclick="delGoal(\''+x.id+'\')">✕</button></div>').join(''):'<div class="empty">No goals yet. What will you finish today?</div>')+'<div class="add"><input id="gi" placeholder="New goal" maxlength="80" onkeydown="if(event.key===\'Enter\')addGoal()"><button class="btn" onclick="addGoal()">Add goal</button></div></div>';
+h+='<div class="card"><h2>🔁 Habits</h2>'+(S.habits.length?S.habits.map(x=>{let d=new Date();d.setDate(d.getDate()-6);let dots='';for(let i=0;i<7;i++){dots+='<span class="'+(x.days[key(d)]?'on':'')+'"></span>';d.setDate(d.getDate()+1)}const s=streak(x);return'<div class="item"><button class="chk '+(x.days[t]?'on':'')+'" onclick="togHabit(\''+x.id+'\')">'+(x.days[t]?'✓':'')+'</button><div class="t">'+esc(x.t)+'<div class="dots">'+dots+'</div></div><div class="streak">'+(s?'🔥 '+s:'')+'</div><button class="x" onclick="delHabit(\''+x.id+'\')">✕</button></div>'}).join(''):'<div class="empty">Habits repeat daily. Add one to build a streak.</div>')+'<div class="add"><input id="hi" placeholder="New habit, e.g. Drink 3L water" maxlength="60" onkeydown="if(event.key===\'Enter\')addHabit()"><button class="btn" onclick="addHabit()">Add habit</button></div></div>';return h}
+const SRC=['Cash / UPI','Credit card','Loan','Pay later','Other'],PAL=['#5b9bff','#ff9f43','#8a6bff','#3ec99a','#ff6f81','#ffc94a'];
+const owe=s=>s==='Credit card'||s==='Loan'||s==='Pay later',eSrc=e=>e.s||'Cash / UPI';
+let pk=-1,mot=null,lastS=0,sm=9.8,sv;
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.chk');if(!b)return;pk=[...document.querySelectorAll('.chk')].indexOf(b);if(!b.classList.contains('on')){const s=document.createElement('i');s.className='fl';s.textContent='⭐';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),900)}},true);
+function anim(){setTimeout(()=>{document.querySelectorAll('#main [data-w]').forEach(e=>e.style.width=e.dataset.w+'%');document.querySelectorAll('#main [data-p]').forEach(e=>e.style.setProperty('--p',e.dataset.p))},40)}
+function setTab(t){tab=t;render(1)}
+function afterToggle(){checkBadges();if(dayDone()&&!S.claimed[today()]){S.claimed[today()]=1;badge('day');award(25);save();setTimeout(scratchCard,700)}save();render(0,1)}
+function delHabit(id){modal('<h2>Delete habit?</h2><p class="sm">Its streak history will be lost.</p><div class="add"><button class="btn alt" onclick="closeM()">Keep it</button><button class="btn" style="background:var(--coral)" onclick="reallyDel(\''+id+'\')">Delete</button></div>')}
+function reallyDel(id){S.habits=S.habits.filter(x=>x.id!==id);save();closeM();render()}
+function srcPick(p){return'<select id="'+p+'s" onchange="srcCh(\''+p+'\')">'+SRC.map(s=>'<option>'+s+'</option>').join('')+'</select><input id="'+p+'n" maxlength="30" style="display:none"><div class="chips" id="'+p+'c"></div>'}
+function srcCh(p){const s=$('#'+p+'s'),n=$('#'+p+'n');if(!s||!n)return;const o=owe(s.value);n.style.display=o?'':'none';const L=S.src[s.value]||[];if(o)n.placeholder=s.value==='Credit card'?'Card nickname, e.g. HDFC Regalia':s.value==='Loan'?'Loan name, e.g. Bike loan':'Provider, e.g. Amazon Pay Later';$('#'+p+'c').innerHTML=o?L.map((x,i)=>'<button type="button" onclick="pickN(\''+p+'\','+i+')">'+esc(x)+'</button>').join(''):''}
+function pickN(p,i){$('#'+p+'n').value=S.src[$('#'+p+'s').value][i]}
+function readSrc(p){const s=$('#'+p+'s').value;let nm='';if(owe(s)){nm=$('#'+p+'n').value.trim();if(!nm){toast('Add a name for this '+s.toLowerCase());return null}const L=S.src[s]=S.src[s]||[],f=L.find(x=>x.toLowerCase()===nm.toLowerCase());if(f)nm=f;else L.push(nm)}return{s,nm}}
+function addExp(){const a=parseFloat($('#ea').value);if(!(a>0)){toast('Enter an amount above 0');return}const r=readSrc('x');if(!r)return;S.exp.push({id:uid(),a,c:$('#ec').value,n:$('#en').value.trim(),d:$('#ed').value||today(),s:r.s,nm:r.nm});save();toast('Expense added');render()}
+function addLump(){const a=parseFloat($('#la').value);if(!(a>0)){toast('Enter an amount above 0');return}const r=readSrc('l');if(!r)return;const d=mk(new Date())===mk(V)?today():key(new Date(V.getFullYear(),V.getMonth()+1,0));S.exp.push({id:uid(),a,c:'Other',n:'Spent so far (before tracking)',d,s:r.s,nm:r.nm,l:1});save();toast('Total added');render()}
+function vSpend(){const m=mk(V),L=mExp(m).sort((a,b)=>b.d.localeCompare(a.d)),tot=L.reduce((s,e)=>s+e.a,0),own=L.filter(e=>!owe(eSrc(e))).reduce((s,e)=>s+e.a,0),bu=S.budget[m]||0;
+if(bu&&own<=bu&&new Date()>new Date(V.getFullYear(),V.getMonth()+1,0)&&!S.badges.save){badge('save');save()}
+let h='<div class="mon"><button onclick="shift(-1)" aria-label="Previous month">‹</button><h2 style="margin:0">'+V.toLocaleDateString('en-IN',{month:'long',year:'numeric'})+'</h2><button onclick="shift(1)" aria-label="Next month">›</button></div>';
+h+='<div class="card"><div class="sm">Total spent</div><div class="big">'+inr(tot)+'</div><div class="split"><div><div class="sm">Own money</div><b>'+inr(own)+'</b></div><div><div class="sm">On credit</div><b>'+inr(tot-own)+'</b></div></div>';
+if(bu){const p=Math.min(100,own/bu*100);h+='<div class="bar"><i data-w="'+p+'" style="width:0;background:'+(own>bu?'var(--coral)':'var(--mint)')+'"></i></div><div class="sm">Budget counts own money only: '+(own>bu?inr(own-bu)+' over '+inr(bu):inr(bu-own)+' left of '+inr(bu))+'</div>'}
+h+='<div class="add"><input id="bu" type="number" inputmode="decimal" placeholder="Monthly budget (₹)" value="'+(bu||'')+'"><button class="btn alt" onclick="setBudget()">Set budget</button></div></div>';
+h+='<div class="card"><h2>Add expense</h2><div class="add"><input id="ea" type="number" inputmode="decimal" placeholder="Amount (₹)"><select id="ec">'+CATS.map(c=>'<option>'+c[0]+'</option>').join('')+'</select></div><div class="add">'+srcPick('x')+'</div><div class="add"><input id="en" placeholder="Note (optional)" maxlength="60"><input id="ed" type="date" class="dt" value="'+(mk(new Date())===m?today():m+'-01')+'"></div><div class="add"><button class="btn" style="flex:1" onclick="addExp()">Add expense</button></div></div>';
+h+='<div class="card"><h2>🧾 Already spent this month?</h2><div class="sm">Add one total for everything spent before you started tracking. Add one per source if you paid from several.</div><div class="add"><input id="la" type="number" inputmode="decimal" placeholder="Total spent so far (₹)"></div><div class="add">'+srcPick('l')+'</div><div class="add"><button class="btn alt" style="flex:1" onclick="addLump()">Add total so far</button></div></div>';
+if(tot){const SG={};L.forEach(e=>{const s=eSrc(e),k=owe(s)?s+' · '+e.nm:s;SG[k]=(SG[k]||0)+e.a});
+h+='<div class="card"><h2>Paid from</h2>'+Object.keys(SG).map((k,i)=>'<div class="cat"><span style="width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(k)+'</span><div class="bar"><i style="--c:'+PAL[i%6]+';width:0;background:'+PAL[i%6]+'" data-w="'+SG[k]/tot*100+'"></i></div><span>'+inr(SG[k])+'</span></div>').join('')+'</div>';
+h+='<div class="card"><h2>By category</h2>'+CATS.map(c=>{const v=L.filter(e=>e.c===c[0]).reduce((s,e)=>s+e.a,0);return v?'<div class="cat"><span style="width:100px">'+c[1]+' '+c[0]+'</span><div class="bar"><i style="width:0;background:'+c[2]+'" data-w="'+v/tot*100+'"></i></div><span>'+inr(v)+'</span></div>':''}).join('')+'</div>'}
+const T=[];for(let i=5;i>=0;i--){const d=new Date(V.getFullYear(),V.getMonth()-i,1);T.push([d.toLocaleDateString('en-IN',{month:'short'}),mExp(mk(d)).reduce((s,e)=>s+e.a,0),i===0])}const mx=Math.max(1,...T.map(x=>x[1]));
+h+='<div class="card"><h2>Last 6 months</h2><div class="trend">'+T.map(x=>'<div class="'+(x[2]?'cur':'')+'"><i style="height:3px" data-h="'+x[1]/mx*60+'"></i>'+x[0]+'</div>').join('')+'</div></div>';
+h+='<div class="card"><h2>Expenses</h2>'+(L.length?L.map(e=>{const c=CATS.find(x=>x[0]===e.c)||CATS[6],s=eSrc(e);return'<div class="item"><span style="font-size:24px">'+(e.l?'🧾':c[1])+'</span><div class="t">'+esc(e.n||e.c)+'<div class="sm">'+e.d.slice(8)+'/'+e.d.slice(5,7)+' · '+e.c+' · '+esc(owe(s)?e.nm:s)+'</div></div><b>'+inr(e.a)+'</b><button class="x" onclick="delExp(\''+e.id+'\')">✕</button></div>'}).join(''):'<div class="empty">No expenses this month. Add one above.</div>')+'</div>';return h}
+function vGoals(){let h='<div class="card"><h2>🏔️ Long-term goals</h2><div class="sm">Big goals with a deadline. Move the slider as you make progress.</div><div class="add"><input id="lt" placeholder="e.g. Save ₹50,000" maxlength="80"><input id="ld" type="date" class="dt"><button class="btn" onclick="addLong()">Add goal</button></div></div>';
+if(!S.longs.length)h+='<div class="empty">No long-term goals yet. Add one with a deadline.</div>';
+[...S.longs].sort((a,b)=>(a.p>=100)-(b.p>=100)).forEach(l=>{const dl=l.due?Math.round((new Date(l.due+'T00:00:00')-new Date(today()+'T00:00:00'))/864e5):null,od=dl!==null&&dl<0&&l.p<100,lab=l.p>=100?'🏆 Achieved':dl===null?'No deadline':dl<0?Math.abs(dl)+' days overdue':dl===0?'Due today':dl+' days left';
+h+='<div class="card"><div class="row"><div class="t"><b>'+esc(l.t)+'</b><div class="sm '+(od?'over':'')+'">'+lab+'</div></div><button class="x" onclick="delLong(\''+l.id+'\')">✕</button></div><div class="bar"><i style="width:0" data-w="'+l.p+'"></i></div><div class="row" style="margin-top:8px"><input type="range" min="0" max="100" step="5" value="'+l.p+'" oninput="this.nextElementSibling.textContent=this.value+\'%\'" onchange="setLong(\''+l.id+'\',this.value)"><b style="width:46px;text-align:right">'+l.p+'%</b></div></div>'});return h}
+function addLong(){const t=$('#lt').value.trim();if(!t){toast('Name your goal first');return}S.longs.push({id:uid(),t,due:$('#ld').value||'',p:0,aw:0});save();render()}
+function setLong(id,v){const l=S.longs.find(x=>x.id===id);l.p=+v;if(l.p>=100&&!l.aw){l.aw=1;award(100);badge('long');confetti(90);modal('<div class="e">🏆</div><h2>Goal achieved!</h2><p>'+esc(l.t)+'</p><p class="sm">+100 XP</p><button class="btn" onclick="closeM()">Celebrate</button>')}save();render(0,1)}
+function delLong(id){S.longs=S.longs.filter(x=>x.id!==id);save();render()}
+function vSteps(){const n=S.steps[today()]||0,g=S.stepGoal,p=Math.min(100,Math.round(n/g*100));
+return'<div class="card"><div class="row"><div class="ring walk" id="sring" data-p="'+p+'"><b id="spc">'+p+'%</b></div><div style="flex:1"><h2 style="margin:0">👟 Steps today</h2><div><b id="stc" style="font-size:22px">'+n.toLocaleString('en-IN')+'</b><span class="sm"> / '+g.toLocaleString('en-IN')+'</span></div></div></div><div class="add"><input id="sn" type="number" inputmode="numeric" placeholder="Total from your tracker"><button class="btn" onclick="saveSteps()">Save steps</button></div><div class="add"><button class="btn alt" onclick="plusSteps(1000)">+1,000</button><input id="sg" type="number" inputmode="numeric" placeholder="Daily goal" value="'+g+'" onchange="setSG(this.value)"><button class="btn'+(mot?'':' alt')+'" onclick="togMotion()">'+(mot?'Stop counter':'Phone counter (beta)')+'</button></div><div class="sm">A web page can\'t read Google Fit or Apple Health directly. Copy your total from your tracker, or use the beta counter while this page stays open.</div></div>'}
+function stepCheck(){const t=today();if((S.steps[t]||0)>=S.stepGoal&&!S.stepAw[t]){S.stepAw[t]=1;badge('walk');award(15);confetti(50);toast('👟 Step goal hit! +15 XP');render(0,1)}}
+function saveSteps(){const v=parseFloat($('#sn').value);if(!(v>=0)){toast('Enter your step count');return}S.steps[today()]=Math.round(v);stepCheck();save();render()}
+function plusSteps(n){S.steps[today()]=(S.steps[today()]||0)+n;stepCheck();save();render()}
+function setSG(v){v=parseInt(v);if(v>0){S.stepGoal=v;stepCheck();save();render(0,1)}}
+function addStep(){const t=today(),n=S.steps[t]=(S.steps[t]||0)+1,p=Math.min(100,Math.round(n/S.stepGoal*100)),a=$('#stc');if(a){a.textContent=n.toLocaleString('en-IN');$('#spc').textContent=p+'%';$('#sring').style.setProperty('--p',p)}stepCheck();clearTimeout(sv);sv=setTimeout(save,2000)}
+async function togMotion(){if(mot){removeEventListener('devicemotion',mot);mot=null;save();render(0,1);return}
+if(!window.DeviceMotionEvent){toast('Motion sensor not supported here');return}
+try{if(DeviceMotionEvent.requestPermission&&await DeviceMotionEvent.requestPermission()!=='granted'){toast('Motion access was denied');return}}catch(e){toast('Motion access unavailable');return}
+mot=ev=>{const a=ev.accelerationIncludingGravity;if(!a)return;const m=Math.hypot(a.x||0,a.y||0,a.z||0);sm=sm*.8+m*.2;const t=Date.now();if(m-sm>2.2&&t-lastS>350){lastS=t;addStep()}};addEventListener('devicemotion',mot);toast('Counting steps. Keep this page open.');render(0,1)}
+function render(f,k){const kp={};if(k)document.querySelectorAll('#main input,#main select').forEach(e=>{if(e.id)kp[e.id]=e.value});
+$('#plant').textContent=plant();$('#lv').textContent='Level '+lvl();$('#xpb').style.width=(S.xp%50)*2+'%';$('#xpt').textContent=(S.xp%50)+' / 50 XP to next level';
+const m=$('#main');m.innerHTML=tab==='today'?vToday():tab==='goals'?vGoals():tab==='spend'?vSpend():vRew();
+for(const i in kp){const e=document.getElementById(i);if(e)e.value=kp[i]}
+srcCh('x');srcCh('l');
+if(f){m.classList.remove('fade');void m.offsetWidth;m.classList.add('fade')}
+$('#tabs').innerHTML=[['today','✅','Today'],['goals','🎯','Goals'],['spend','💸','Spending'],['rew','🏅','Rewards']].map(t=>'<button class="'+(tab===t[0]?'on':'')+'" onclick="setTab(\''+t[0]+'\')"><span>'+t[1]+'</span>'+t[2]+'</button>').join('');
+if(pk>=0){const b=document.querySelectorAll('.chk')[pk];if(b&&b.classList.contains('on'))b.classList.add('tick');pk=-1}
+anim();setTimeout(()=>document.querySelectorAll('#main [data-h]').forEach(e=>e.style.height=e.dataset.h+'px'),40)}
+function vRew(){let h='<div class="card"><h2>🏅 Badges</h2><div class="badges">'+BADGES.map(b=>'<div class="bd '+(S.badges[b[0]]?'on':'')+'"><s>'+b[1]+'</s>'+b[2]+'</div>').join('')+'</div></div>';
+h+='<div class="card"><h2>🎁 Your reward pool</h2><div class="sm">Finish every goal and habit in a day to scratch one of these.</div>'+S.rewards.map((r,i)=>'<div class="item"><div class="t">'+esc(r)+'</div><button class="x" onclick="delRew('+i+')">✕</button></div>').join('')+'<div class="add"><input id="ri" placeholder="Add your own reward" maxlength="60" onkeydown="if(event.key===\'Enter\')addRew()"><button class="btn" onclick="addRew()">Add</button></div></div>';
+h+='<div class="card"><h2>How XP works</h2><div class="sm">Goal done +10 · Habit done +5 · Perfect day +25. Every 50 XP grows your plant a level.</div></div>';return h}
+render();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
